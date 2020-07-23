@@ -1,26 +1,31 @@
+<%-- 
+    Document   : datoscurso.jsp
+    Created on : 23/07/2020, 10:33:34 AM
+    Author     : GAMER
+--%>
 <%@page import="java.sql.*" %>
 <%@page import="bd.*" %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Datos Estudiante</title>
+        <title>Datos Curso</title>
         <%!
             String consulta;
             Connection cn;
             PreparedStatement pst;
             ResultSet rs;
             String s_accion;
-            String s_idestudiante;
-            String s_nombre;
-            String s_apellidos;
-            String s_dni;
+            String s_idcurso;
             String s_codigo;
+            String s_nombre;
+            String s_horas;
+            String s_creditos;
             String s_estado;
             
         %>
+        
     </head>
     <body>
         <%
@@ -29,43 +34,43 @@
                 cn = bd.getConnection();
                 
                 s_accion = request.getParameter("f_accion");
-                s_idestudiante = request.getParameter("f_idestudiante");
+                s_idcurso = request.getParameter("f_idcurso");
                 
                 if(s_accion!=null && s_accion.equals("M1")){
-                    consulta = "    select nombre, apellidos, dni, codigo, estado  "
-                                + " from estudiante "
+                    consulta = "    select codigo, nombre, horas, creditos, estado  "
+                                + " from curso "
                                 + " where"
-                                + " idestudiante = " + s_idestudiante + "; ";
+                                + " idcurso = " + s_idcurso + "; ";
                     //out.print(consulta);
                     pst = cn.prepareStatement(consulta);
                     rs = pst.executeQuery();
                     if (rs.next()) {
         %>
         
-        <form name="EditarEstudianteForm" action="datosestudiante.jsp" method="GET">
+        <form name="EditarCursoForm" action="datoscurso.jsp" method="GET">
             <table border="0" align="center">
                 <thead>
                     <tr>
-                        <th colspan="2">Editar Estudiante</th>
+                        <th colspan="2">Editar Curso</th>
                         
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Codigo: </td>
+                        <td><input type="text" name="f_codigo" value="<% out.print(rs.getString(1)); %>" maxlength="10" size="20" /></td>
+                    </tr>
+                    <tr>
                         <td>Nombre: </td>
-                        <td><input type="text" name="f_nombre" value="<% out.print(rs.getString(1)); %>" maxlength="30" size="20" /></td>
+                        <td><input type="text" name="f_nombre" value="<% out.print(rs.getString(2)); %>" maxlength="40" size="20" /></td>
                     </tr>
                     <tr>
-                        <td>Apellido: </td>
-                        <td><input type="text" name="f_apellidos" value="<% out.print(rs.getString(2)); %>" maxlength="40" size="20" /></td>
+                        <td>Horas: </td>
+                        <td><input type="text" name="f_horas" value="<% out.print(rs.getString(3)); %>" maxlength="2" size="8"/></td>
                     </tr>
                     <tr>
-                        <td>DNI: </td>
-                        <td><input type="text" name="f_dni" value="<% out.print(rs.getString(3)); %>" maxlength="8" size="8"/></td>
-                    </tr>
-                    <tr>
-                        <td>Código</td>
-                        <td><input type="text" name="f_codigo" value="<% out.print(rs.getString(4)); %>" maxlength="12" size="11"/></td>
+                        <td>Creditos</td>
+                        <td><input type="text" name="f_creditos" value="<% out.print(rs.getString(4)); %>" maxlength="2" size="11"/></td>
                     </tr>
                     <tr>
                         <td>Estado: </td>
@@ -75,7 +80,7 @@
                         <td colspan="2">
                             <input type="submit" value="Editar" name="f_editar" />
                             <input type="hidden" name="f_accion" value="M2" />
-                            <input type="hidden" name="f_idestudiante" value="<% out.print(s_idestudiante); %>" />
+                            <input type="hidden" name="f_idcurso" value="<% out.print(s_idcurso); %>" />
                         </td>
                     </tr>
                 </tbody>
@@ -86,30 +91,30 @@
                 }
             }else{
         %>
-        <form name="AgregarEstudianteForm" action="datosestudiante.jsp" method="GET">
+        <form name="AgregarCursoForm" action="datoscurso.jsp" method="GET">
             <table border="0" align="center">
                 <thead>
                     <tr>
-                        <th colspan="2">Agregar Estudiante</th>
+                        <th colspan="2">Agregar Curso</th>
                         
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Codigo: </td>
+                        <td><input type="text" name="f_codigo" value="" maxlength="30" size="20" /></td>
+                    </tr>
+                    <tr>
                         <td>Nombre: </td>
-                        <td><input type="text" name="f_nombre" value="" maxlength="30" size="20" /></td>
+                        <td><input type="text" name="f_nombre" value="" maxlength="40" size="20" /></td>
                     </tr>
                     <tr>
-                        <td>Apellido: </td>
-                        <td><input type="text" name="f_apellidos" value="" maxlength="40" size="20" /></td>
+                        <td>Horas: </td>
+                        <td><input type="text" name="f_horas" value="" maxlength="8" size="8"/></td>
                     </tr>
                     <tr>
-                        <td>DNI: </td>
-                        <td><input type="text" name="f_dni" value="" maxlength="8" size="8"/></td>
-                    </tr>
-                    <tr>
-                        <td>Código</td>
-                        <td><input type="text" name="f_codigo" value="" maxlength="12" size="11"/></td>
+                        <td>Creditos</td>
+                        <td><input type="text" name="f_creditos" value="" maxlength="12" size="11"/></td>
                     </tr>
                     <tr>
                         <td>Estado: </td>
@@ -128,18 +133,18 @@
         }
         %>
         
-        <table border="1" cellspacing="0" cellpadding="" align ="center" class="general" style="margin: auto; display: table">
+    <table border="1" cellspacing="0" cellpadding="" align ="center" class="ecologico" style="margin: auto; display: table">
             <link href="css/Estilosparatabla.css" rel="stylesheet" type="text/css"/>
             <thead>
                 <tr>
-                    <th colspan="8">Datos Estudiante</th>
+                    <th colspan="8">Datos Curso</th>
                 </tr>
                 <tr>
                     <th>N°</th>
+                    <th>Codigo</th>
                     <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>DNI</th>
-                    <th>Código</th>
+                    <th>Horas</th>
+                    <th>Creditos</th>
                     <th>Estado</th>
                     <th>Eliminar</th>
                     <th>Editar</th>
@@ -151,47 +156,47 @@
                 
                 if (s_accion!=null) {
                     if (s_accion.equals("E")) {
-                        consulta =  "   delete from estudiante "
+                        consulta =    " delete from curso "
                                     + " where "
-                                    + " idestudiante = " + s_idestudiante + "; ";
+                                    + " idcurso = " + s_idcurso + "; ";
                         //out.print(consulta);
                         pst = cn.prepareStatement(consulta);
                         pst.executeUpdate();
                             
                     }else if (s_accion.equals("C")) {
-                        s_nombre = request.getParameter("f_nombre");
-                        s_apellidos = request.getParameter("f_apellidos");
-                        s_dni = request.getParameter("f_dni");
                         s_codigo = request.getParameter("f_codigo");
+                        s_nombre = request.getParameter("f_nombre");
+                        s_horas = request.getParameter("f_horas");
+                        s_creditos = request.getParameter("f_creditos");
                         s_estado = request.getParameter("f_estado");
                         consulta =  "   insert into "
-                                    + " estudiante(nombre, apellidos, dni, codigo, estado) "
-                                    + " values ('"+ s_nombre +"','"+ s_apellidos +"','"+ s_dni +"','"+ s_codigo +"','"+ s_estado +"')";
+                                    + " curso(codigo, nombre, horas, creditos, estado) "
+                                    + " values ('"+ s_codigo +"','"+ s_nombre +"','"+ s_horas +"','"+ s_creditos +"','"+ s_estado +"')";
                         //out.print(consulta);
                         pst = cn.prepareStatement(consulta);
                         pst.executeUpdate();
                     }else if (s_accion.equals("M2")) {
-                        s_nombre = request.getParameter("f_nombre");
-                        s_apellidos = request.getParameter("f_apellidos");
-                        s_dni = request.getParameter("f_dni");
                         s_codigo = request.getParameter("f_codigo");
+                        s_nombre = request.getParameter("f_nombre");
+                        s_horas = request.getParameter("f_horas");
+                        s_creditos = request.getParameter("f_creditos");
                         s_estado = request.getParameter("f_estado");
-                        consulta = " update  estudiante  "
+                        consulta = " update  curso  "
                                 + "  set  "
+                                + "  codigo = '"+ s_codigo +"',"
                                 + "  nombre = '"+ s_nombre +"',"
-                                + "  apellidos = '"+ s_apellidos +"',"
-                                + "  dni = '"+ s_dni +"', "
-                                + "  codigo = '"+ s_codigo +"', "
+                                + "  horas = '"+ s_horas +"', "
+                                + "  creditos = '"+ s_creditos +"', "
                                 + "  estado = '"+ s_estado +"' "
                                 + "  where "
-                                + "  idestudiante = "+ s_idestudiante +"; ";
+                                + "  idcurso = "+ s_idcurso +"; ";
                         //out.print(consulta);
                         pst = cn.prepareStatement(consulta);
                         pst.executeUpdate();
                     }
                 }
-                consulta= " Select idestudiante, nombre, apellidos, dni, codigo, estado "
-                        + " from estudiante ";
+                consulta= " Select idcurso, codigo, nombre, horas, creditos, estado "
+                        + " from curso ";
                 //out.print(consulta);
                 pst = cn.prepareStatement(consulta);
                 rs = pst.executeQuery();
@@ -209,8 +214,8 @@
                         <td><%out.print(rs.getString(4));%></td>
                         <td><%out.print(rs.getString(5));%></td>
                         <td><%out.print(rs.getString(6));%></td>
-                        <td><a href="datosestudiante.jsp?f_accion=E&f_idestudiante=<%out.print(ide);%>">Eliminar</a></td>
-                        <td><a href="datosestudiante.jsp?f_accion=M1&f_idestudiante=<%out.print(ide);%>">Editar</a></td>
+                        <td><a href="datoscurso.jsp?f_accion=E&f_idcurso=<%out.print(ide);%>">Eliminar</a></td>
+                        <td><a href="datoscurso.jsp?f_accion=M1&f_idcurso=<%out.print(ide);%>">Editar</a></td>
 
                     </tr>                    
                     <%
